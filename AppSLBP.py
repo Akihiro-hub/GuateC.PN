@@ -9,6 +9,15 @@ from openpyxl import load_workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import Alignment, Border, Side  # 必要なモジュールをインポート
 
+import time
+# Streamlitアプリのメイン処理
+def main():
+    # ... (通常のStreamlitアプリのコード)
+
+if __name__ == "__main__":
+    while True:
+        main()
+        time.sleep(360*360)  # 6時間ごとにアプリを再起動
 
 rubro = st.sidebar.selectbox("Herramientas de planificación a aplicar", ["Seleccione", "Plan de negocio en operación", "Plan de emprendimiento", "Plan de inversión", "Plan del flujo de caja", "Planificación de préstamos", "Plan de pagos de deuda e interés", "Planificación de venta (Comedor)", "Planificación de inventario", "Análisis de punto de equilibrio"])
 
