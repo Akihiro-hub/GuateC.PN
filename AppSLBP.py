@@ -1,14 +1,9 @@
 import streamlit as st
-
 import time
-# Streamlitアプリのメイン処理
 def main():
-    # ... (通常のStreamlitアプリのコード)
-
-if __name__ == "__main__":
     while True:
-        main()
-        time.sleep(360*360)  # 6時間ごとにアプリを再起動
+        time.sleep(360 * 360)  # Sleep for 6 hours
+
 
 import pandas as pd
 from io import BytesIO
