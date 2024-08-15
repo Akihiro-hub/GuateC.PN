@@ -1,13 +1,4 @@
 import streamlit as st
-import pandas as pd
-from io import BytesIO
-from openpyxl import Workbook
-import matplotlib.pyplot as plt
-import numpy as np
-
-from openpyxl import load_workbook
-from openpyxl.utils.dataframe import dataframe_to_rows
-from openpyxl.styles import Alignment, Border, Side  # 必要なモジュールをインポート
 
 import time
 # Streamlitアプリのメイン処理
@@ -18,6 +9,16 @@ if __name__ == "__main__":
     while True:
         main()
         time.sleep(360*360)  # 6時間ごとにアプリを再起動
+
+import pandas as pd
+from io import BytesIO
+from openpyxl import Workbook
+import matplotlib.pyplot as plt
+import numpy as np
+
+from openpyxl import load_workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+from openpyxl.styles import Alignment, Border, Side  # 必要なモジュールをインポート
 
 rubro = st.sidebar.selectbox("Herramientas de planificación a aplicar", ["Seleccione", "Plan de negocio en operación", "Plan de emprendimiento", "Plan de inversión", "Plan del flujo de caja", "Planificación de préstamos", "Plan de pagos de deuda e interés", "Planificación de venta (Comedor)", "Planificación de inventario", "Análisis de punto de equilibrio"])
 
