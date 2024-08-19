@@ -77,14 +77,17 @@ elif rubro == "Plan de negocio en operación":
         
         return excel_data
 
-    initial_cash = st.number_input("Saldo inicial del ejecutivo (dinero):", min_value=0, value=1200, step=1, format="%d")
-    sales = st.number_input("Monto estimado de venta mensual (GTQ):", min_value=0, value=4100, step=1, format="%d")
-    material_cost = st.number_input("Costo mensual de materias primas (y otros costos variables, GTQ):", min_value=0, value=1500, step=1, format="%d")
-    labor_cost = st.number_input("Remuneraciones mensuales de trabajadores como costo fijo (GTQ):", min_value=0, value=1200, step=1, format="%d")
-    loan_repayment = st.number_input("Pago mensual de deuda (como costo fijo, GTQ):", min_value=0, value=0, step=1, format="%d")
-    other_fixed_costs = st.number_input("Otros costos fijos, tales como alquiler de la tienda, electricidad, etc (GTQ):", min_value=0, value=1100, step=1, format="%d")
-    desired_profit = st.number_input("Ganancias mensuales que desea (Meta de ganancias, GTQ):", min_value=0, value=2000, step=1, format="%d")
-
+    col1, col2 = st.columns(2)
+    with col1:
+        sales = st.number_input("Monto estimado de venta mensual (GTQ):", min_value=0, value=4100, step=1, format="%d")
+        desired_profit = st.number_input("Ganancias mensuales que desea (Meta de ganancias, GTQ):", min_value=0, value=2000, step=1, format="%d")
+        initial_cash = st.number_input("Saldo inicial del ejecutivo (GTQ):", min_value=0, value=1200, step=1, format="%d")
+    with col2:
+        material_cost = st.number_input("Costo mensual de materias primas (y otros costos variables, GTQ):", min_value=0, value=1500, step=1, format="%d")
+        labor_cost = st.number_input("Remuneraciones mensuales de trabajadores como costo fijo (GTQ):", min_value=0, value=1200, step=1, format="%d")
+        loan_repayment = st.number_input("Pago mensual de deuda (como costo fijo, GTQ):", min_value=0, value=0, step=1, format="%d")
+        other_fixed_costs = st.number_input("Otros costos fijos, tales como alquiler de la tienda, electricidad, etc (GTQ):", min_value=0, value=1100, step=1, format="%d")
+       
     if st.button("Elaborar el plan operativo de negocio (planificación de venta y flujo de caja)"):
         breakeven_sales, required_sales, cash_flow, fixed_cost, variable_ratio = calculate_cash_flow(
             initial_cash, sales, material_cost, labor_cost, loan_repayment, other_fixed_costs, desired_profit)
