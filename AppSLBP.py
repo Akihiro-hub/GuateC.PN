@@ -80,7 +80,7 @@ elif rubro == "Plan de negocio en operación":
     col1, col2 = st.columns(2)
     with col1:
         sales = st.number_input("Monto estimado de venta mensual (¿Cuánto monto su negocio vende al mes en GTQ?):", min_value=0, value=4100, step=1, format="%d")
-        desired_profit = st.number_input("Meta de ganancias mensuales, ¿Cuánto desea ganar al mes en GTQ?):", min_value=0, value=2000, step=1, format="%d")
+        desired_profit = st.number_input("Meta de ganancias mensuales (¿Cuánto desea ganar al mes en GTQ?):", min_value=0, value=2000, step=1, format="%d")
         initial_cash = st.number_input("Saldo inicial del ejecutivo (¿Cuánto monto de ejecutivo comercial tiene actualmente en GTQ?):", min_value=0, value=1200, step=1, format="%d")
     with col2:
         material_cost = st.number_input("Costo mensual de materias primas (y otros costos variables, GTQ):", min_value=0, value=1500, step=1, format="%d")
