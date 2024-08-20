@@ -1,6 +1,5 @@
 import streamlit as st
-# テーマをライトテーマに設定
-st.set_page_config(layout="centered", theme={"base": "light"})
+
 import time
 def main():
     while True:
