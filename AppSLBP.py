@@ -1,18 +1,5 @@
 import streamlit as st
 
-st.set_page_config(
-    layout="centered",  # Options: "centered", "wide"
-    page_title="Your App Title",
-    page_icon=":shark:",  # You can use an emoji or a local file path
-    theme={
-        "primaryColor": "#4CAF50",
-        "backgroundColor": "#FFFFFF",
-        "secondaryBackgroundColor": "#F0F0F0",
-        "textColor": "#000000",
-        "font": "sans serif"
-    }
-)
-
 import time
 def main():
     while True:
