@@ -39,8 +39,8 @@ elif rubro == "Pronóstico de ventas":
     # 過去12か月のその他の特徴量
     turistas = [160543, 122187, 167359, 171869, 128521, 138101, 156385, 148382, 113775, 120748, 142130, 182429]
     
-    st.write("## Pronóstico (estimación) de ventas en próximos 12 meses")
-    st.write("##### (Herramienta de Inteligencia Artificial por Modelo XGBoost para sectores de comercio y turísmo)")
+    st.write("### :blue[Pronóstico (estimación) de ventas en próximos 12 meses]")
+    st.write("###### (Herramienta de Inteligencia Artificial por Modelo XGBoost para sectores de comercio y turísmo)")
     st.write("###### :red[Esta herramienta estima las ventas en futuro próximo, mediante la información sobre las ventas realizadas en estos 12 meses, los datos climáticos de la ciudad (a seleccionar) y el número de visitantes exteriores al país. Será probable que el resultado de estimación no sea precisa, debido a la limitación de los datos de variables explicativas.]")
     
     # 各都市のデータ
@@ -65,7 +65,7 @@ elif rubro == "Pronóstico de ventas":
     # 月の選択肢
     meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
     
-    st.write("##### :blue[Seleccione el mes actual y la ciudad cuyo clima es más parecido al mismo de su lugar]")
+    st.write("##### :blue[Seleccione el mes actual y la ciudad cuyo clima es semejante al mismo de su lugar]")
     
     col1, col2 = st.columns(2)
     with col1:
