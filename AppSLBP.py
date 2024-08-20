@@ -10,6 +10,9 @@ from io import BytesIO
 from openpyxl import Workbook
 import matplotlib.pyplot as plt
 import numpy as np
+import xgboost as xgb
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
 
 from openpyxl import load_workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
@@ -29,7 +32,134 @@ if rubro == "Seleccione":
 
     st.write("###### (NOTA: Cada una de herramientas se presentará, dependiendo de su selección en las opciones presentadas a la izquierda.)")
 
-
+elif rubro == "Pronóstico de ventas":
+    # 過去12か月の売上データの初期値
+    ventas_iniciales = [4870, 4900, 5400, 5100, 4900, 5350, 5300, 4900, 4950, 5100, 5300, 5200]
+    # 過去12か月のその他の特徴量
+    turistas = [160543, 122187, 167359, 171869, 128521, 138101, 156385, 148382, 113775, 120748, 142130, 182429]
+    
+    st.write("## Pronóstico (estimación) de ventas en próximos 12 meses")
+    st.write("##### (Herramienta de Inteligencia Artificial por Modelo XGBoost para sectores de comercio y turísmo)")
+    st.write("###### :red[Esta herramienta estima las ventas en futuro próximo, mediante la información sobre las ventas realizadas en estos 12 meses, los datos climáticos de la ciudad (a seleccionar) y el número de visitantes exteriores al país. Será probable que el resultado de estimación no sea precisa, debido a la limitación de los datos de variables explicativas.]")
+    
+    # 各都市のデータ
+    ciudades = {
+        "Ciudad de Guatemala": {
+            "lluvias": [0.7, 0.5, 1.3, 3.9, 10.3, 15.6, 14.3, 15.0, 16.2, 11.2, 4.2, 1.3],
+            "temperaturas": [14, 14, 15, 16, 17, 17, 17, 17, 17, 16, 15, 14],
+        },
+        "Huehuetenango": {
+            "lluvias": [1.0, 1.0, 2.6, 6.8, 15.7, 22.2, 21.2, 22.3, 23.2, 17.2, 6.7, 1.8],
+            "temperaturas": [7, 8, 9, 11, 13, 14, 13, 13, 14, 13, 10, 8],
+        },
+        "Puerto San José": {
+            "lluvias": [0.5, 0.4, 1.1, 3.4, 10.2, 15.3, 14.4, 15.2, 16.4, 11.7, 4.0, 1.1],
+            "temperaturas": [20, 20, 22, 23, 24, 24, 23, 23, 23, 23, 22, 20],
+        },
+        "Flores": {
+            "lluvias": [6.5, 4.0, 3.2, 3.1, 7.2, 13.2, 13.6, 13.4, 14.8, 12.4, 8.2, 7.4],
+            "temperaturas": [18, 18, 19, 21, 23, 23, 22, 22, 22, 22, 20, 19],
+        }
+    }
+    # 月の選択肢
+    meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+    
+    st.write("##### :blue[Seleccione el mes actual y la ciudad cuyo clima es más parecido al mismo de su lugar]")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        # 選択された月の初期値
+        mes_actual = st.selectbox("Selecciona el mes actual", meses, index=9)
+    
+    with col2:
+        # Select the city
+        ciudad = st.selectbox("Selecciona la ciudad", list(ciudades.keys()))
+    
+    # Get the city's data
+    lluvias = ciudades[ciudad]["lluvias"]
+    temperaturas = ciudades[ciudad]["temperaturas"]
+    
+    
+    # 月のインデックスを取得
+    mes_index = meses.index(mes_actual)
+    
+    # ユーザーが売上データを入力
+    st.write("##### :blue[Ingrese los datos de ventas de los últimos 12 meses]")
+    
+    # 各列に4か月分の売上データ入力フィールドを配置するための列の作成
+    cols = st.columns(4)
+    
+    # 12か月前からの順序を保持し、各列に4か月分を表示
+    for i in range(12):
+        col_index = i // 3  # 0, 1, 2, 3 (4列)
+        month_label = f"Hace {12 - i} meses ({meses[(mes_index - 12 + i) % 12]})"
+        with cols[col_index]:
+            ventas_iniciales[i] = st.number_input(month_label, value=ventas_iniciales[i], key=i)
+    
+    # データフレームの作成
+    data = pd.DataFrame({
+        'Ventas': ventas_iniciales,
+        "Días de lluvias": lluvias[mes_index:] + lluvias[:mes_index],
+        "Temperatura mínima del día": temperaturas[mes_index:] + temperaturas[:mes_index],
+        'Visitantes exteriores al país': turistas[mes_index:] + turistas[:mes_index]
+    })
+    
+    # 特徴量とターゲットの準備
+    X = data[['Días de lluvias', 'Temperatura mínima del día', 'Visitantes exteriores al país']]
+    y = data['Ventas']
+    
+    # データを訓練セットとテストセットに分割
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=True)
+    
+    # XGBoostモデルの訓練
+    model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=6)
+    model.fit(X_train, y_train)
+    
+    # 12カ月先まで予測
+    forecast_input = X.iloc[-1].values.reshape(1, -1)
+    forecast = []
+    for i in range(12):
+        next_pred = model.predict(forecast_input)[0]
+        forecast.append(next_pred)
+        # 新しい特徴量の生成
+        new_row = np.array([lluvias[(mes_index + i + 1) % 12], temperaturas[(mes_index + i + 1) % 12], turistas[(mes_index + i + 1) % 12]]).reshape(1, -1)
+        forecast_input = new_row
+    
+    forecast_df = pd.DataFrame(forecast, index=[f"{meses[(mes_index+i)%12]}" for i in range(12, 24)], columns=['Ventas'])
+    forecast_df['Ventas'] = forecast_df['Ventas'].round(0).astype(int)  # 売上高を整数に丸める
+    
+    # 実績データと予測データの結合
+    full_data = pd.concat([data, forecast_df])
+    full_data.index = [f"Hace {12-i} meses ({meses[(mes_index-12+i)%12]})" for i in range(12)] + [meses[(mes_index+i)%12] for i in range(12, 24)]
+    
+    if st.button("Estimar (pronosticar) ventas futuras por la inteligencia artificial"):
+    
+        # グラフの表示
+        st.subheader("Ventas realizadas y estimadas en los 24 meses")
+        plt.figure(figsize=(12, 4))
+        plt.plot(full_data.index[:12], full_data['Ventas'][:12], label='Ventas realizadas', color='blue', marker='o')
+        plt.plot(full_data.index[12:], full_data['Ventas'][12:], label='Ventas estimadas', color='orange', marker='o')
+        plt.xticks(rotation=45, ha='right')
+        plt.legend(loc='upper left')
+        plt.grid(True)
+        plt.tight_layout()
+        st.pyplot(plt)
+    
+        # 表の表示
+        st.subheader("Datos de ventas realizadas y estimadas")
+        st.write("Los datos de días de lluvia y otros indicadores no son exactamente del año pasado sino de los otros años de muestra.")
+        resultados = pd.concat([data, forecast_df])
+        resultados.index = [f"Hace {12-i} meses ({meses[(mes_index-12+i)%12]})" for i in range(12)] + [meses[(mes_index+i)%12] for i in range(12, 24)]
+        st.dataframe(resultados)
+    
+        # エクセルファイルのダウンロード
+        st.subheader("Descargar Datos en Excel")
+        def convert_df(df):
+            return df.to_csv().encode('utf-8')
+        csv = convert_df(resultados)
+        st.download_button(label="Descargar datos en Excel como CSV", data=csv, file_name='prediccion_ventas.csv', mime='text/csv')
+    
+        
 elif rubro == "Plan de negocio en operación":
     st.write("## :blue[Plan de negocio en operación]") 
     st.write("###### Esta herramienta facilita la planificación del monto a vender y el flujo de caja.") 
