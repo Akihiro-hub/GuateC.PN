@@ -287,12 +287,22 @@ elif rubro == "Planificación de inventario":
 
     if st.button("Calcular el volumen de inventario de seguridad)"):
         st.write("##### Resultado de cálculo:") 
-        st.write("###### Volumen de inventario de seguridad con la probabilidad de escasez de 1% (piezas)")
-        st.text(round(Inventario_seguridad1))
-        st.write("###### Volumen de inventario de seguridad con la probabilidad de escasez de 5% (piezas)")
-        st.text(round(Inventario_seguridad5))
-        st.write("###### Volumen de inventario de seguridad con la probabilidad de escasez de 10% (piezas)")
-        st.text(round(Inventario_seguridad10))  
+        col1, col2 = st.columns(2)
+        with col1:
+            st.write("###### Volumen de inventario de seguridad con la probabilidad de escasez de 1%, CASO A (piezas)")
+            st.text(round(Inventario_seguridad1))
+            st.write("###### Volumen de inventario de seguridad con la probabilidad de escasez de 5%, CASO B (piezas)")
+            st.text(round(Inventario_seguridad5))
+            st.write("###### Volumen de inventario de seguridad con la probabilidad de escasez de 10%, CASO C (piezas)")
+            st.text(round(Inventario_seguridad10))  
+        with col2:
+            st.write("###### Volumen de inventario en CASO A como promedio (piezas)")
+            st.text(round(Inventario_seguridad1+np.mean(data)*g/2))
+            st.write("###### Volumen de inventario en CASO B como promedio (piezas)")
+            st.text(round(Inventario_seguridad5+np.mean(data)*g/2))
+            st.write("###### Volumen de inventario en CASO C como promedio (piezas)")
+            st.text(round(Inventario_seguridad10+np.mean(data)*g/2))  
+        st.write("###### :red[NOTA: Además del inventario de seguridad, la empresa también necesita tener cierto volumen del inventario para su consumo durante el período de espera después de colocación de la orden de materias primas, por lo que el volumen promedio de inventario en posesión debe ser mayor que el inventario de seguridad.]")
 
 elif rubro == "Planificación de préstamos":
     st.write("## :blue[Planificación de préstamos]") 
