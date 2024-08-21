@@ -297,15 +297,14 @@ elif rubro == "Planificación de inventario":
             st.write("###### Caso C: Inventario de seguridad con la probabilidad de escasez de 10% (piezas):")
             st.text(round(Inventario_seguridad10))  
         with col2:
-            st.write("##### :green[Volumen máximo a posear ]")
-            st.write("###### Volumen máximo de inventario en posesión en Caso A (piezas):")
+            st.write("##### :green[Volumen al punto de ordenar ]")
+            st.write("###### Volumen de inventario en posesión al punto de ordenar en Caso A (piezas):")
             st.text(round(Inventario_seguridad1+np.mean(data)*g))
-            st.write("###### Volumen máximo de inventario en posesión en Caso B (piezas):")
+            st.write("###### Volumen de inventario en posesión al punto de ordenar en Caso B (piezas):")
             st.text(round(Inventario_seguridad5+np.mean(data)*g))
-            st.write("###### Volumen máximo de inventario en posesión en Caso C (piezas):")
+            st.write("###### Volumen de inventario en posesión al punto de ordenar en Caso C (piezas):")
             st.text(round(Inventario_seguridad10+np.mean(data)*g))  
-        st.write("###### :red[NOTA: Además del inventario de seguridad, la empresa también necesita tener cierto volumen del inventario para su consumo durante el período de espera después de colocación de la orden de materias primas, por lo que el volumen de inventario a tener por máximo debe ser mayor que el inventario de seguridad. En otras palabras, el volumen a tener por máximo puede ser; Promedio de consumos diarios x Días de espera + Inventario de seguridad.]")
-
+        st.write("###### :red[NOTA: Además del inventario de seguridad, la empresa también necesita tener cierto volumen del inventario para su consumo durante el período de espera después de colocación de la orden de materias primas, por lo que el volumen de inventario a tener al punto de ordenar debe ser mayor que el inventario de seguridad. En otras palabras, el volumen al punto de colocación de la orden puede ser; Promedio de consumos diarios x Días de espera + Inventario de seguridad.]")
 elif rubro == "Planificación de préstamos":
     st.write("## :blue[Planificación de préstamos]") 
     st.write("###### El monto disponible para el préstamo dependerá de (i) cuota mensual a poder pagar, (ii) tasa de interés, y (iii) período de amortización, como se puede calcular mediante esta herramienta.")
