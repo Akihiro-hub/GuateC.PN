@@ -297,7 +297,7 @@ elif rubro == "Planificación de inventario":
             st.write("###### Caso C: Inventario de seguridad con la probabilidad de escasez de 10% (piezas):")
             st.text(round(Inventario_seguridad10))  
         with col2:
-            st.write("##### :green[Volumen de inventario como promedio]")
+            st.write("##### :green[Volumen de inventario en promedio]")
             st.write("###### Volumen de inventario en posesión en Caso A como promedio (piezas):")
             st.text(round(Inventario_seguridad1+np.mean(data)*g/2))
             st.write("###### Volumen de inventario en posesión en Caso B como promedio (piezas):")
