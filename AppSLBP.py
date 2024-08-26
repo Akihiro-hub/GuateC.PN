@@ -445,13 +445,15 @@ elif rubro == "Plan de emprendimiento":
     sheets = pd.read_excel(file_path, sheet_name=None)
 
     # 各シートをインタラクティブに表示
-    st.write("## :blue[Plan de emprendimiento]") 
-    st.write("###### Puede editar las siguientes tablas para preparar el plan de negocio, y luego, descargarlas como el documento Excel.  :green[(GuateCrece)]")  
-    st.write("###### :red[La primera tabla facilita concretar las ideas del negocio a montar. La segunda apoya que tenga las ideas sobre compras y ventas en cuanto al negocio.]")  
+    st.write("# :blue[Plan de emprendimiento]") 
+    st.write("###### El plan de emprendimiento se puede elaborar, mediante los siguientes pasos (1) concretar las ideas del negocio,y (2) preparar el plan financiero al inicio del negocio.")  
+    
+    st.write("## :blue[Paso 1: Concretar las ideas sobre el negocio]") 
+    st.write("###### Este primer paso se puede desarrollar, mediante la llenada de las siguientes dos tablas. La primera tabla facilita concretar las ideas del negocio a montar. La segunda apoya que tenga las ideas sobre compras y ventas en cuanto al negocio.")  
     edited_sheets = {}
 
     for sheet_name, df in sheets.items():
-        st.header(f"Tabla: {sheet_name}")
+        st.subheader(f"Tabla: {sheet_name}")
         
         # 数字部分を文字列に変換
         df = df.astype(str)
@@ -462,9 +464,6 @@ elif rubro == "Plan de emprendimiento":
         # 文字列を元のデータ型に戻す
         edited_sheets[sheet_name] = edited_df.apply(pd.to_numeric, errors='ignore')
 
-    st.write("###### :red[Con relacion a la tercera tabla, primero, el emprendedor debe analizar (A) qué activos como maquinaria se necesitan para el negocio, y (B) el monto necesario del capital de trabajo en los primeros tres meses de la operación.]") 
-    st.write("###### :red[Luego, debe analizar cómo adquirir el fondo necesario mediante el (C) capital propio y (D) crédito.]") 
-    
     # 編集されたデータフレームを保存するボタンを表示
     if st.button("Guardar las tablas en Excel"):
         output = BytesIO()
@@ -503,6 +502,105 @@ elif rubro == "Plan de emprendimiento":
 
         # ダウンロードリンクを作成
         st.download_button(label="Descargar", data=output, file_name="Plan_emprendimiento_editado.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+    # 資金計画部分
+    st.write("## :blue[Paso 2: Elaborar el plan financiero al inicio]") 
+    st.write("###### Como el segundo paso, el emprendedor deberá elaborar el plan financiero al inicio del negocio, retroalimentando el paso anterior. El plan deberá identidicar el capital a necesitar y cómo adquirirlo.") 
+    st.write("###### Con relación al capital de trabajo, será importante estimar el monto necesario para los primeros 3 meses de operación, considerando que las ventas podrán ser inestables al inicio del negocio.") 
+    
+    # 初期データ
+    data1 = {
+        "Asuntos": ["2 microondas", "3 fogones", "2 estantes", "Remodelación de la tienda", "Otros"] + [""] * 5,
+        "Monto (GTQ)": [2000, 3000, 3000, 30000, 7000] + [0] * 5
+    }
+
+    data2 = {
+        "Asuntos": ["Materias primas (harina de trigo, huevos, etc.)", "Agua y electricidad", "Otros"] + [""] * 7,
+        "Monto (GTQ)": [8000, 2000, 5000] + [0] * 7
+    }
+
+    # データフレーム作成
+    df1 = pd.DataFrame(data1)
+    df2 = pd.DataFrame(data2)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        # Capital de inversión a necesitar
+        st.subheader("Tabla: Capital de inversión a necesitar")
+        # カラム幅と高さを調整
+        st.dataframe(df1, width=800, height=200)
+
+        # 合計の計算と表示
+        total1 = total_inversion = df1["Monto (GTQ)"].sum()
+        st.write(f"**Total Capital de Inversión:** {total_inversion} GTQ")
+
+    with col2:
+        # Capital de trabajo a necesitar para primeros 3 meses de la operación
+        st.subheader("Tabla: Capital de trabajo para primeros 3 meses")
+       
+        # カラム幅と高さを調整
+        st.dataframe(df2, width=800, height=200)
+
+        # 合計行の計算と表示
+        total2 = total_trabajo = df2["Monto (Lps.)"].sum()
+        st.write(f"**Total Capital de Trabajo:** {total_trabajo} Lps.")
+
+    # Tabla 3: Fuentes del capital necesario
+    st.subheader("Tabla: Fuentes del capital a necesitar")
+    col1, col2 = st.columns(2)
+    with col1:
+        a = st.number_input("Mi propio dinero (GTQ)", 0, 10000000000000, 10000)
+        b = st.number_input("Ayuda de mi familia y remesa", 0, 1000000000000, 20000)
+        c = st.number_input("Otros fuentes del fondo propio", 0, 1000000000000, 0)
+        st.write(f"<p style='text-align: right;'>Monto total de capital propio: {a+b+c} Lps.</p>", unsafe_allow_html=True)
+
+    with col2:
+        d = st.number_input("Crédito de la cooperativa", 0, 1000000000000000, 30000)
+        e = st.number_input("Otros créditos", 0, 1000000000000000, 0)
+        st.write(f"<p style='text-align: right;'>Monto total de créditos: {d+e} Lps.</p>", unsafe_allow_html=True)
+        st.write(f"<p style='text-align: right;'>Total: {a+b+c+d+e} Lps.</p>", unsafe_allow_html=True)
+
+    # 合計の比較
+    total3= a+b+c+d+e
+    if total1 + total2 > total3:
+        st.warning(f"¡Ojo! La financiación (fuentes del capital) es insuficiente para el monto total necesario para montar el negocio. La cantidad necesaria debe ser {total1 + total2} Lps.")
+    elif total1 + total2 < total3:
+        st.warning(f"¡Ojo! La financiación (fuentes del capital) excede el monto total necesario para montar el negocio. La cantidad necesaria debe ser {total1 + total2} Lps.")
+
+    # エクセル出力のための関数
+    def to_excel(df1, df2, a, b, c, d, e):
+        output = BytesIO()
+        workbook = Workbook()
+        worksheet1 = workbook.active
+        worksheet1.title = "Tabla 1"
+        for r in dataframe_to_rows(df1, index=False, header=True):
+            worksheet1.append(r)
+        worksheet2 = workbook.create_sheet("Tabla 2")
+        for r in dataframe_to_rows(df2, index=False, header=True):
+            worksheet2.append(r)
+        worksheet3 = workbook.create_sheet("Tabla 3")
+        worksheet3.append(["Asuntos", "Monto (Lps.)"])
+        worksheet3.append(["Mi propio dinero", a])
+        worksheet3.append(["Ayuda de mi familia y remesa", b])
+        worksheet3.append(["Otros fuentes del fondo propio", c])
+        worksheet3.append(["Monto total de capital propio", a+b+c])
+        worksheet3.append(["Crédito de la cooperativa", d])
+        worksheet3.append(["Otros créditos", e])
+        worksheet3.append(["Monto total de créditos", d+e])
+        worksheet3.append(["Total", a+b+c+d+e])
+        
+        # 各シートのカラム幅を設定
+        for ws in workbook.worksheets:
+            ws.column_dimensions['A'].width = 30
+            ws.column_dimensions['B'].width = 30
+
+        workbook.save(output)
+        return output.getvalue()
+
+    # エクセル出力のためのボタン
+    excel_data = to_excel(df1, df2, a, b, c, d, e)
+    st.download_button(label="Descargar en Excel", data=excel_data, file_name="planificacion_de_capital.xlsx")
+
 
 
 elif rubro == "Plan del flujo de caja":
