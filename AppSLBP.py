@@ -128,7 +128,15 @@ elif rubro == "Pronóstico de ventas":
     
     forecast_df = pd.DataFrame(forecast, index=[f"{meses[(mes_index+i)%12]}" for i in range(12, 24)], columns=['Ventas'])
     forecast_df['Ventas'] = forecast_df['Ventas'].round(0).astype(int)  # 売上高を整数に丸める
-    
+
+    # 最小二乗法で傾きを計算
+    from scipy.stats import linregress
+    x = np.arange(len(ventas_iniciales))
+    slope, intercept, _, _, _ = linregress(x, ventas_iniciales)
+
+    # 傾きを加算して予測を修正
+    forecast_df['Ventas'] = forecast_df['Ventas'] + slope * np.arange(1, 13)
+
     # 実績データと予測データの結合
     full_data = pd.concat([data, forecast_df])
     full_data.index = [f"Hace {12-i} meses ({meses[(mes_index-12+i)%12]})" for i in range(12)] + [meses[(mes_index+i)%12] for i in range(12, 24)]
