@@ -40,9 +40,9 @@ elif rubro == "Pronóstico de ventas":
     turistas = [160543, 122187, 167359, 171869, 128521, 138101, 156385, 148382, 113775, 120748, 142130, 182429]
     
     st.write("### :blue[Pronóstico (estimación) de ventas en próximos 12 meses]")
-    st.write("###### (Herramienta de Inteligencia Artificial por Modelo XGBoost, con ajuste del método de los mínimos cuadrados, para sectores de comercio y turísmo)")
+    st.write("###### Herramienta de Inteligencia Artificial por Modelo XGBoost, con ajuste del método de los mínimos cuadrados, para sectores de comercio y turísmo :blue[GuateCrece]")
     st.write("###### :red[Esta herramienta estima las ventas en futuro próximo, mediante la información sobre las ventas realizadas en estos 12 meses, los datos climáticos de la ciudad (a seleccionar) y el número de visitantes exteriores al país. Será probable que el resultado de estimación no sea precisa, debido a la limitación de los datos de variables explicativas.]")
-    
+ 
     # 各都市のデータ
     ciudades = {
         "Ciudad de Guatemala": {
