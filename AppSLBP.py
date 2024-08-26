@@ -40,7 +40,7 @@ elif rubro == "Pronóstico de ventas":
     turistas = [160543, 122187, 167359, 171869, 128521, 138101, 156385, 148382, 113775, 120748, 142130, 182429]
     
     st.write("### :blue[Pronóstico (estimación) de ventas en próximos 12 meses]")
-    st.write("###### Herramienta de Inteligencia Artificial por Modelo XGBoost, con ajuste del método de los mínimos cuadrados, para sectores de comercio y turísmo :blue[GuateCrece]")
+    st.write("###### Herramienta de Inteligencia Artificial por Modelo XGBoost, con ajuste del método de los mínimos cuadrados, para sectores de comercio y turísmo :green[(GuateCrece)]")
     st.write("###### :red[Esta herramienta estima las ventas en futuro próximo, mediante la información sobre las ventas realizadas en estos 12 meses, los datos climáticos de la ciudad (a seleccionar) y el número de visitantes exteriores al país. Será probable que el resultado de estimación no sea precisa, debido a la limitación de los datos de variables explicativas.]")
  
     # 各都市のデータ
@@ -171,7 +171,7 @@ elif rubro == "Pronóstico de ventas":
         
 elif rubro == "Plan de negocio en operación":
     st.write("## :blue[Plan de negocio en operación]") 
-    st.write("###### Esta herramienta facilita la planificación del monto a vender y el flujo de caja.") 
+    st.write("###### Esta herramienta facilita la planificación del monto a vender y el flujo de caja. :green[(GuateCrece)]") 
     
     def calculate_cash_flow(initial_cash, sales, material_cost, labor_cost, loan_repayment, other_fixed_costs, desired_profit):
         fixed_cost = labor_cost + loan_repayment + other_fixed_costs
@@ -274,7 +274,7 @@ elif rubro == "Plan de negocio en operación":
 
 elif rubro == "Planificación de inventario":
     st.write("## :blue[Planificación de inventario de seguridad]") 
-    st.write("###### Esta herramienta facilita la calculación del volumen de inventario de seguridad, que se refiere a la cantidad necesaria a mantener siempre para evitar escasez, en ciertas materias importantes.")  
+    st.write("###### Esta herramienta facilita la calculación del volumen de inventario de seguridad, que se refiere a la cantidad necesaria a mantener siempre para evitar escasez, en ciertas materias importantes. :green[(GuateCrece)]")  
     st.write("###### En el siguiente ejemplo se muestra un caso de maderas aserradas como la materia prima principal de la carpintería, mientras que esta herramienta es aplicable para otros negocios también.")
     st.write("###### Es importante calcular el volumen de inventario de seguridad, ya que el mismo se relaciona directamente al monto necesario del capital de trabajo.")
     col1, col2 = st.columns(2)
@@ -327,7 +327,7 @@ elif rubro == "Planificación de préstamos":
 
 elif rubro == "Planificación de venta (Comedor)":
     st.write("## :blue[Planificación del monto de ventas en un comedor]") 
-    st.write("###### El monto de la venta de un restaurante, comedor o cafetería se puede estimar, en base al número de asientos, aplicando esta calculadora.")  
+    st.write("###### El monto de la venta de un restaurante, comedor o cafetería se puede estimar, en base al número de asientos, aplicando esta calculadora. :green[(GuateCrece)]")  
     a = st.number_input("¿Cuánto asientos tiene el comedor?", 0, 1000, 20)
     b = st.number_input("Tasa de ocupación de los asientos por los clientes (%)", 0, 100, 50)
     c = st.number_input("Veces estimadas de rotación de los clientes al día", 1, 10, 3)
@@ -345,7 +345,7 @@ elif rubro == "Planificación de venta (Comedor)":
 
 elif rubro == "Análisis de punto de equilibrio":
     st.write("## :blue[Análisis de punto de equilibrio]") 
-    st.write("###### Se puede calcular la meta de venta, en base al análisis del punto de equilibrio. Mientras que el siguiente ejemplo se refiere a un caso de panadería, esta calculadora se puede aplicar en cualquier negocio.")  
+    st.write("###### Se puede calcular la meta de venta, en base al análisis del punto de equilibrio. Mientras que el siguiente ejemplo se refiere a un caso de panadería, esta calculadora se puede aplicar en cualquier negocio. :green[(GuateCrece)]")  
     a = st.number_input("Precio unitario (¿cuánto cuesta un paquete de panes a vender como promedio?, GTQ)", 1, 100000000000, 15)
     b = st.number_input("Costo variable unitario (¿cuánto vale el costo de materias primas para un paquete?, GTQ)", 0, 100000000000, 3)
     c = st.number_input("Costo fijo mensual (alquiler del espacio, depreciación de la maquina, costo de electricidad, etc., GTQ)", 1, 100000000000, 3000)
@@ -362,7 +362,7 @@ elif rubro == "Análisis de punto de equilibrio":
 
 elif rubro == "Plan de pagos de deuda e interés":
     st.write("## :blue[Plan de pagos de deuda e interés (Cálculo de amortización de préstamo)]") 
-    st.write("###### Esta herramienta calcula el monto de la cuota mensual, la proporción de intereses y capital en un préstamo de amortización constante y genera el cuadro de amortización del préstamo.")  
+    st.write("###### Esta herramienta calcula el monto de la cuota mensual, la proporción de intereses y capital en un préstamo de amortización constante y genera el cuadro de amortización del préstamo. :green[(GuateCrece)]")  
 
 
     # 入力項目
@@ -414,7 +414,7 @@ elif rubro == "Plan de pagos de deuda e interés":
 
 elif rubro == "Plan de inversión":
     st.write("## :blue[Planificación de inversión]") 
-    st.write("###### Esta herramienta calcula ciertos indicadores para poder evaluar la factibilidad económica del proyecto de inversión.")  
+    st.write("###### Esta herramienta calcula ciertos indicadores para poder evaluar la factibilidad económica del proyecto de inversión. :green[(GuateCrece)]")  
 
     a = st.number_input("¿Cuánto se debe invertir al inicio del proyecto (GTQ)?", 0, 10000000000000, 50000)
     b = st.number_input("¿Cuál es tasa de costo del capital del negocio (%)?", 0, 100, 12)
@@ -446,7 +446,7 @@ elif rubro == "Plan de emprendimiento":
 
     # 各シートをインタラクティブに表示
     st.write("## :blue[Plan de emprendimiento]") 
-    st.write("###### Puede editar las siguientes tablas para preparar el plan de negocio, y luego, descargarlas como el documento Excel.")  
+    st.write("###### Puede editar las siguientes tablas para preparar el plan de negocio, y luego, descargarlas como el documento Excel.  :green[(GuateCrece)]")  
     st.write("###### :red[La primera tabla facilita concretar las ideas del negocio a montar. La segunda apoya que tenga las ideas sobre compras y ventas en cuanto al negocio.]")  
     edited_sheets = {}
 
@@ -508,7 +508,7 @@ elif rubro == "Plan de emprendimiento":
 elif rubro == "Plan del flujo de caja":
 
     st.write("## :blue[Plan del flujo de caja]") 
-    st.write("###### Es importante que el empresario o emprendedor elabore el presupuesto del flujo de caja para ver si el negocio puede mantener bien su liquidez o no.")  
+    st.write("###### Es importante que el empresario o emprendedor elabore el presupuesto del flujo de caja para ver si el negocio puede mantener bien su liquidez o no. :green[(GuateCrece)]")  
 
     # Excel file path
     file_path = 'plan_de_flujo_de_caja.xlsx'
