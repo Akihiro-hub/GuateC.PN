@@ -110,10 +110,10 @@ elif rubro == "Pronóstico de ventas":
     y = data['Ventas']
     
     # データを訓練セットとテストセットに分割
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=True)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False)
     
     # XGBoostモデルの訓練
-    model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=6)
+    model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=10)
     model.fit(X_train, y_train)
     
     # 12カ月先まで予測
