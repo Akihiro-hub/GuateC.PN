@@ -542,7 +542,7 @@ elif rubro == "Plan de emprendimiento":
         st.dataframe(df2, width=800, height=200)
 
         # 合計行の計算と表示
-        total2 = total_trabajo = df2["Monto (Lps.)"].sum()
+        total2 = total_trabajo = df2["Monto (GTQ)"].sum()
         st.write(f"**Total Capital de Trabajo:** {total_trabajo} Lps.")
 
     # Tabla 3: Fuentes del capital necesario
