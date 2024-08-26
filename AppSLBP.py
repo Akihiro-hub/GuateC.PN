@@ -35,12 +35,12 @@ if rubro == "Seleccione":
 
 elif rubro == "Pronóstico de ventas":
     # 過去12か月の売上データの初期値
-    ventas_iniciales = [4870, 4900, 5400, 5100, 4900, 5350, 5300, 4900, 4950, 5100, 5300, 5200]
+    ventas_iniciales = [4700, 4900, 5280, 5100, 4900, 5200, 5250, 4900, 4980, 5100, 5300, 5200]
     # 過去12か月のその他の特徴量
     turistas = [160543, 122187, 167359, 171869, 128521, 138101, 156385, 148382, 113775, 120748, 142130, 182429]
     
     st.write("### :blue[Pronóstico (estimación) de ventas en próximos 12 meses]")
-    st.write("###### (Herramienta de Inteligencia Artificial por Modelo XGBoost para sectores de comercio y turísmo)")
+    st.write("###### (Herramienta de Inteligencia Artificial por Modelo XGBoost, con ajuste del método de los mínimos cuadrados, para sectores de comercio y turísmo)")
     st.write("###### :red[Esta herramienta estima las ventas en futuro próximo, mediante la información sobre las ventas realizadas en estos 12 meses, los datos climáticos de la ciudad (a seleccionar) y el número de visitantes exteriores al país. Será probable que el resultado de estimación no sea precisa, debido a la limitación de los datos de variables explicativas.]")
     
     # 各都市のデータ
