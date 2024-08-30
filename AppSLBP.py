@@ -123,7 +123,7 @@ elif rubro == "Pronóstico de ventas":
         "Días de lluvias": lluvias[mes_index:] + lluvias[:mes_index],
         "Temperatura mínima del día": temperaturas[mes_index:] + temperaturas[:mes_index],
         'Visitantes exteriores al país': turistas[mes_index:] + turistas[:mes_index],
-        'Remesas': remesas[mes_index:] + remesas[:mes_index],
+        'Remesas': remesas[mes_index:] + remesas[:mes_index]
     })
     
     # 特徴量とターゲットの準備
