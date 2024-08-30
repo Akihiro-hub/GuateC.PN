@@ -127,7 +127,7 @@ elif rubro == "Pronóstico de ventas":
     })
     
     # 特徴量とターゲットの準備
-    X = data[['Días de lluvias', 'Temperatura mínima del día', 'Visitantes exteriores al país', 'Remesas']]
+    X = data[['Días de lluvias', 'Temperatura mínima del día', 'Visitantes exteriores al país']]
     y = data['Ventas']
     
     # データを訓練セットとテストセットに分割
