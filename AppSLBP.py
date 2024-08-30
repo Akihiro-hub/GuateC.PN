@@ -137,31 +137,17 @@ elif rubro == "Pronóstico de ventas":
     model.fit(X_train, y_train)
     
     # 12カ月先まで予測
+    forecast_input = X.iloc[-1].values.reshape(1, -1)
     forecast = []
     for i in range(12):
-        # 予測を実行
         next_pred = model.predict(forecast_input)[0]
         forecast.append(next_pred)
-        
         # 新しい特徴量の生成
-        next_mes_index = (mes_index + i + 1) % 12  # 次の月のインデックス
-        new_row = np.array([
-            lluvias[next_mes_index], 
-            temperaturas[next_mes_index], 
-            turistas[next_mes_index], 
-            remesas[next_mes_index], 
-        ]).reshape(1, -1)
-        
-        # 新しいデータを用いて次月の予測用入力データを更新
+        new_row = np.array([lluvias[(mes_index + i + 1) % 12], temperaturas[(mes_index + i + 1) % 12], turistas[(mes_index + i + 1) % 12], remesas[(mes_index + i + 1) % 12]]).reshape(1, -1)
         forecast_input = new_row
     
-    # 予測データフレームの作成
     forecast_df = pd.DataFrame(forecast, index=[f"{meses[(mes_index+i)%12]}" for i in range(12, 24)], columns=['Ventas'])
     forecast_df['Ventas'] = forecast_df['Ventas'].round(0).astype(int)  # 売上高を整数に丸める
-    
-    # 実績データと予測データの結合
-    full_data = pd.concat([data, forecast_df])
-    full_data.index = [f"Hace {12-i} meses ({meses[(mes_index-12+i)%12]})" for i in range(12)] + [meses[(mes_index+i)%12] for i in range(12, 24)]
 
     # 最小二乗法で傾きを計算
     from scipy.stats import linregress
@@ -170,6 +156,10 @@ elif rubro == "Pronóstico de ventas":
 
     # 傾きを加算して予測を修正
     forecast_df['Ventas'] = forecast_df['Ventas'] + slope * np.arange(1, 13)
+    
+    # 実績データと予測データの結合
+    full_data = pd.concat([data, forecast_df])
+    full_data.index = [f"Hace {12-i} meses ({meses[(mes_index-12+i)%12]})" for i in range(12)] + [meses[(mes_index+i)%12] for i in range(12, 24)]
     
     if st.button("Estimar (pronosticar) ventas futuras por la inteligencia artificial"):
     
