@@ -37,7 +37,7 @@ elif rubro == "Pronóstico de ventas":
     ventas_iniciales = [4700, 4900, 5280, 5100, 4900, 5200, 5250, 4950, 5100, 5130, 5280, 5100]
     # 過去12か月のその他の特徴量
     turistas = [160543, 122187, 167359, 171869, 128521, 138101, 156385, 148382, 113775, 120748, 142130, 182429]
-    remesas = [343, 352, 421, 421, 451, 437, 439, 449, 419, 453, 400, 445] # 2002～2019年の月間平均（単位100万ドル）
+    remesas = [343, 352, 421, 421, 451, 437, 439, 449, 419, 453, 400, 445] 
     
     st.write("### :blue[Pronóstico (estimación) de ventas en próximos 12 meses]")
     st.write("###### Herramienta de Inteligencia Artificial por Modelo XGBoost, con ajuste del método de los mínimos cuadrados, para sectores de comercio y turísmo :green[(GuateCrece)]")
