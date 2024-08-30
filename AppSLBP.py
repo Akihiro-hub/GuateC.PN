@@ -3,8 +3,7 @@ import streamlit as st
 import time
 def main():
     while True:
-        time.sleep(360 * 360)  # Sleep for 6 hours
-
+        time.sleep(360 * 360)  
 
 import pandas as pd
 from io import BytesIO
@@ -38,6 +37,7 @@ elif rubro == "Pronóstico de ventas":
     ventas_iniciales = [4700, 4900, 5280, 5100, 4900, 5200, 5250, 4950, 5100, 5130, 5280, 5100]
     # 過去12か月のその他の特徴量
     turistas = [160543, 122187, 167359, 171869, 128521, 138101, 156385, 148382, 113775, 120748, 142130, 182429]
+    remesas = [343, 352, 421, 421, 451, 437, 439, 449, 419, 453, 400, 445] # 2002～2019年の月間平均（単位100万ドル）
     
     st.write("### :blue[Pronóstico (estimación) de ventas en próximos 12 meses]")
     st.write("###### Herramienta de Inteligencia Artificial por Modelo XGBoost, con ajuste del método de los mínimos cuadrados, para sectores de comercio y turísmo :green[(GuateCrece)]")
@@ -49,6 +49,26 @@ elif rubro == "Pronóstico de ventas":
             "lluvias": [0.7, 0.5, 1.3, 3.9, 10.3, 15.6, 14.3, 15.0, 16.2, 11.2, 4.2, 1.3],
             "temperaturas": [14, 14, 15, 16, 17, 17, 17, 17, 17, 16, 15, 14],
         },
+        "Xela": {
+            "lluvias": [0.9, 0.9, 2.9, 7.1, 14.9, 21.1, 20.2, 20.9, 22.1, 17.5, 7.1, 1.6],
+            "temperaturas": [6, 6, 7, 9, 10, 10, 10, 10, 10, 10, 8, 6],
+        },
+        "Jutiapa": {
+            "lluvias": [0.7, 0.4, 0.8, 2.5, 8.2, 13.1, 12.2, 12.9, 12.9, 9.2, 3.1, 1.3],
+            "temperaturas": [15, 16, 17, 18, 19, 19, 19, 19, 19, 18, 17, 16],
+        },
+        "Sololá": {
+            "lluvias": [0.9, 0.9, 2.8, 7.1, 14.7, 20.9, 20.3, 21.0, 21.9, 17.1, 6.9, 1.7],
+            "temperaturas": [7, 7, 9, 10, 12, 12, 11, 11, 12, 11, 9, 8],
+        },     
+        "Chimaltenango": {
+            "lluvias": [0.7, 0.7, 2.0, 5.2, 12.4, 18.1, 17.1, 17.9, 18.9, 13.9, 5.4, 1.5],
+            "temperaturas": [11, 11, 12, 14, 15, 15, 14, 14, 15, 14, 13, 11],
+        },       
+        "Nebaj": {
+            "lluvias": [1.1, 1.0, 2.5, 6.3, 15.3, 22.3, 21.0, 22.1, 23.0, 16.5, 6.5, 1.9],
+            "temperaturas": [7, 7, 8, 10, 12, 13, 12, 12, 13, 12, 10, 7],
+        },               
         "Huehuetenango": {
             "lluvias": [1.0, 1.0, 2.6, 6.8, 15.7, 22.2, 21.2, 22.3, 23.2, 17.2, 6.7, 1.8],
             "temperaturas": [7, 8, 9, 11, 13, 14, 13, 13, 14, 13, 10, 8],
@@ -106,14 +126,14 @@ elif rubro == "Pronóstico de ventas":
     })
     
     # 特徴量とターゲットの準備
-    X = data[['Días de lluvias', 'Temperatura mínima del día', 'Visitantes exteriores al país']]
+    X = data[['Días de lluvias', 'Temperatura mínima del día', 'Visitantes exteriores al país', 'Remesas']]
     y = data['Ventas']
     
     # データを訓練セットとテストセットに分割
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False)
     
     # XGBoostモデルの訓練
-    model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=14)
+    model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=13)
     model.fit(X_train, y_train)
     
     # 12カ月先まで予測
@@ -364,7 +384,6 @@ elif rubro == "Plan de pagos de deuda e interés":
     st.write("## :blue[Plan de pagos de deuda e interés (Cálculo de amortización de préstamo)]") 
     st.write("###### Esta herramienta calcula el monto de la cuota mensual, la proporción de intereses y capital en un préstamo de amortización constante y genera el cuadro de amortización del préstamo. :green[(GuateCrece)]")  
 
-
     # 入力項目
     principal = st.number_input("Monto del préstamo (GTQ):", min_value=0, value=20000, step=1000, format="%d")
     annual_rate = st.number_input("Tasa de interés anual (%):", min_value=0.0, value=26.0, step=0.1, format="%f")
@@ -393,7 +412,7 @@ elif rubro == "Plan de pagos de deuda e interés":
         df = pd.DataFrame(schedule, columns=["Mes", "Pago mensual (GTQ)", "Pago a capital (GTQ)", "Interés (GTQ)", "Saldo restante (GTQ)"])
 
         # 結果の表示（インデックスをリセットして表示）
-        st.write("### Cuadro de Amortización")
+        st.write("#### Cuadro de Amortización en base al plan de cuotas niveladas")
         st.dataframe(df.reset_index(drop=True))
 
         # Excelファイルのダウンロードオプション
@@ -410,7 +429,6 @@ elif rubro == "Plan de pagos de deuda e interés":
             file_name="cuadro_de_amortizacion.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
-
 
 elif rubro == "Plan de inversión":
     st.write("## :blue[Planificación de inversión]") 
@@ -437,7 +455,6 @@ elif rubro == "Plan de inversión":
         st.write("###### :red[Un proyecto con el VPN negativo o insuficiente se debe rechazar. El segundo indicador es para la referencia teórica, y el empresario deberá recuperar el fondo invertido lo antes posible.]") 
 
 elif rubro == "Plan de emprendimiento":
-
     # エクセルファイルのパス
     file_path = 'Plan emprendimiento.xlsx'
 
@@ -601,10 +618,7 @@ elif rubro == "Plan de emprendimiento":
     excel_data = to_excel(df1, df2, a, b, c, d, e)
     st.download_button(label="Descargar en Excel", data=excel_data, file_name="planificacion_de_capital.xlsx")
 
-
-
 elif rubro == "Plan del flujo de caja":
-
     st.write("## :blue[Plan del flujo de caja]") 
     st.write("###### Es importante que el empresario o emprendedor elabore el presupuesto del flujo de caja para ver si el negocio puede mantener bien su liquidez o no. :green[(GuateCrece)]")  
 
