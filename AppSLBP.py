@@ -80,7 +80,7 @@ elif rubro == "Pronóstico de ventas":
         "Flores": {
             "lluvias": [6.5, 4.0, 3.2, 3.1, 7.2, 13.2, 13.6, 13.4, 14.8, 12.4, 8.2, 7.4],
             "temperaturas": [18, 18, 19, 21, 23, 23, 22, 22, 22, 22, 20, 19],
-        }
+        },
     }
     # 月の選択肢
     meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
@@ -116,54 +116,38 @@ elif rubro == "Pronóstico de ventas":
         month_label = f"Hace {12 - i} meses ({meses[(mes_index - 12 + i) % 12]})"
         with cols[col_index]:
             ventas_iniciales[i] = st.number_input(month_label, value=ventas_iniciales[i], key=i)
-    
     # データフレームの作成
     data = pd.DataFrame({
         'Ventas': ventas_iniciales,
         "Días de lluvias": lluvias[mes_index:] + lluvias[:mes_index],
         "Temperatura mínima del día": temperaturas[mes_index:] + temperaturas[:mes_index],
         'Visitantes exteriores al país': turistas[mes_index:] + turistas[:mes_index],
-        'Remesas': remesas[mes_index:] + remesas[:mes_index]
+        "Remesas familiares": remesas[mes_index:] + remesas[:mes_index],
     })
     
     # 特徴量とターゲットの準備
-    X = data[['Días de lluvias', 'Temperatura mínima del día', 'Visitantes exteriores al país']]
+    X = data[['Días de lluvias', 'Temperatura mínima del día', 'Visitantes exteriores al país', 'Remesas familiares']]
     y = data['Ventas']
     
     # データを訓練セットとテストセットに分割
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle=False)
     
     # XGBoostモデルの訓練
     model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=13)
     model.fit(X_train, y_train)
-
+    
     # 12カ月先まで予測
+    forecast_input = X.iloc[-1].values.reshape(1, -1)
     forecast = []
     for i in range(12):
-    # 予測を実行
         next_pred = model.predict(forecast_input)[0]
         forecast.append(next_pred)
-        
         # 新しい特徴量の生成
-        next_mes_index = (mes_index + i + 1) % 12  # 次の月のインデックス
-        new_row = np.array([
-            lluvias[next_mes_index], 
-            temperaturas[next_mes_index], 
-            turistas[next_mes_index], 
-            remesas[next_mes_index], 
-        ]).reshape(1, -1)  # ここで reshape を使用して形状を調整
-        
-        # 新しいデータを用いて次月の予測用入力データを更新
+        new_row = np.array([lluvias[(mes_index + i + 1) % 12], temperaturas[(mes_index + i + 1) % 12], turistas[(mes_index + i + 1) % 12], remesas[(mes_index + i + 1) % 12]]).reshape(1, -1)
         forecast_input = new_row
-
     
-    # 予測データフレームの作成
     forecast_df = pd.DataFrame(forecast, index=[f"{meses[(mes_index+i)%12]}" for i in range(12, 24)], columns=['Ventas'])
     forecast_df['Ventas'] = forecast_df['Ventas'].round(0).astype(int)  # 売上高を整数に丸める
-    
-    # 実績データと予測データの結合
-    full_data = pd.concat([data, forecast_df])
-    full_data.index = [f"Hace {12-i} meses ({meses[(mes_index-12+i)%12]})" for i in range(12)] + [meses[(mes_index+i)%12] for i in range(12, 24)]
 
     # 最小二乗法で傾きを計算
     from scipy.stats import linregress
@@ -172,6 +156,10 @@ elif rubro == "Pronóstico de ventas":
 
     # 傾きを加算して予測を修正
     forecast_df['Ventas'] = forecast_df['Ventas'] + slope * np.arange(1, 13)
+    
+    # 実績データと予測データの結合
+    full_data = pd.concat([data, forecast_df])
+    full_data.index = [f"Hace {12-i} meses ({meses[(mes_index-12+i)%12]})" for i in range(12)] + [meses[(mes_index+i)%12] for i in range(12, 24)]
     
     if st.button("Estimar (pronosticar) ventas futuras por la inteligencia artificial"):
     
