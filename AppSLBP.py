@@ -140,7 +140,7 @@ elif rubro == "Pronóstico de ventas":
     # 12カ月先まで予測
     forecast = []
     for i in range(12):
-        # 予測を実行
+    # 予測を実行
         next_pred = model.predict(forecast_input)[0]
         forecast.append(next_pred)
         
@@ -151,10 +151,11 @@ elif rubro == "Pronóstico de ventas":
             temperaturas[next_mes_index], 
             turistas[next_mes_index], 
             remesas[next_mes_index], 
-        ]).reshape(1, -1)
+        ]).reshape(1, -1)  # ここで reshape を使用して形状を調整
         
         # 新しいデータを用いて次月の予測用入力データを更新
         forecast_input = new_row
+
     
     # 予測データフレームの作成
     forecast_df = pd.DataFrame(forecast, index=[f"{meses[(mes_index+i)%12]}" for i in range(12, 24)], columns=['Ventas'])
