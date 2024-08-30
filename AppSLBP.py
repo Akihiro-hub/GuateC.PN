@@ -133,7 +133,7 @@ elif rubro == "Pronóstico de ventas":
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, shuffle=False)
     
     # XGBoostモデルの訓練
-    model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=13)
+    model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=10)
     model.fit(X_train, y_train)
     
     # 12カ月先まで予測
