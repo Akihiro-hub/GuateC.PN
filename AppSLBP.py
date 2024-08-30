@@ -41,7 +41,7 @@ elif rubro == "Pronóstico de ventas":
     
     st.write("### :blue[Pronóstico (estimación) de ventas en próximos 12 meses]")
     st.write("###### Herramienta de Inteligencia Artificial por Modelo XGBoost, con ajuste del método de los mínimos cuadrados, para sectores de comercio y turísmo :green[(GuateCrece)]")
-    st.write("###### :red[Esta herramienta estima las ventas en futuro próximo, mediante la información sobre las ventas realizadas en estos 12 meses, los datos climáticos de la ciudad (a seleccionar) y el número de visitantes exteriores al país. Será probable que el resultado de estimación no sea precisa, debido a la limitación de los datos de variables explicativas.]")
+    st.write("###### :red[Esta herramienta estima las ventas en futuro próximo, mediante la información sobre las ventas realizadas en estos 12 meses, los datos climáticos de la ciudad (a seleccionar), el monto de remesas familiares y el número de visitantes exteriores al país en cada mes del año. Será probable que el resultado de estimación no sea precisa, debido a la limitación de los datos de variables explicativas.]")
  
     # 各都市のデータ
     ciudades = {
@@ -122,7 +122,8 @@ elif rubro == "Pronóstico de ventas":
         'Ventas': ventas_iniciales,
         "Días de lluvias": lluvias[mes_index:] + lluvias[:mes_index],
         "Temperatura mínima del día": temperaturas[mes_index:] + temperaturas[:mes_index],
-        'Visitantes exteriores al país': turistas[mes_index:] + turistas[:mes_index]
+        'Visitantes exteriores al país': turistas[mes_index:] + turistas[:mes_index],
+        'Remesas': remesas[mes_index:] + remesas[:mes_index],
     })
     
     # 特徴量とターゲットの準備
