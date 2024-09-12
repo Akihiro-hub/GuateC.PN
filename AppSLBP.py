@@ -175,6 +175,8 @@ elif rubro == "Pronóstico de ventas":
         st.pyplot(plt)
     
         # 表の表示
+        # 小数点以下を表示しない設定
+        pd.options.display.float_format = '{:.0f}'.format
         st.subheader("Datos de ventas realizadas y estimadas")
         st.write("Los datos de días de lluvia y otros indicadores no son exactamente del año pasado sino de los otros años de muestra.")
         resultados = pd.concat([data, forecast_df.round(0)])
