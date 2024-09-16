@@ -475,7 +475,7 @@ elif rubro == "Simulación de inversión":
         inversion_inicial = st.number_input("Monto de inversión (GTQ)", value=50000)
         vida_util = st.number_input("Años de vida útil del equipo a invertir", value=6)
         st.write("###### :red[Tasa de impuesto:]")
-        tasa_impuesto = st.number_input("Tasa de impuesto (%)", value=15)
+        tasa_impuesto = st.number_input("Tasa de impuesto (%)", value=17)
 
     with col2:
         st.write("###### :red[Posible Uso de Crédito:]")
