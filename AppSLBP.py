@@ -22,6 +22,22 @@ if "login_attempts" not in st.session_state:
 def verificar_contraseña():
     contraseña_ingresada = st.text_input("Introduce la contraseña:", type="password")
 
+    if st.button("Iniciar sesión"):
+        if st.session_state.login_attempts >= 3:
+            st.error("Has superado el número máximo de intentos. Acceso bloqueado.")
+        elif contraseña_ingresada == PASSWORD:  # Secretsから取得したパスワードで認証
+            st.session_state.authenticated = True
+            st.success("¡Autenticación exitosa! Marque otra vez el botón 'Iniciar sesión'.")
+        else:
+            st.session_state.login_attempts += 1
+            intentos_restantes = 3 - st.session_state.login_attempts
+            st.error(f"Contraseña incorrecta. Te quedan {intentos_restantes} intento(s).")
+        
+        if st.session_state.login_attempts >= 3:
+            st.error("Acceso bloqueado. Intenta más tarde.")
+
+if st.session_state.authenticated:
+
     rubro = st.sidebar.selectbox("Herramientas de planificación a aplicar", ["Seleccione", "Plan de negocio en operación", "Pronóstico de ventas", "Simulación de inversión", "Plan del flujo de caja", "Planificación de préstamos", "Plan de pagos de deuda e interés", "Planificación de venta (Comedor)", "Planificación de inventario", "Análisis de punto de equilibrio"])
     
     if rubro == "Seleccione":
