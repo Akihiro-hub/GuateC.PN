@@ -724,4 +724,5 @@ def verificar_contraseña():
             # グラフをStreamlitに表示
             st.pyplot(fig)
 
-
+else:
+    verificar_contraseña()
