@@ -743,3 +743,5 @@ if st.session_state.authenticated:
             # グラフをStreamlitに表示
             st.pyplot(fig)
 
+else:
+    verificar_contraseña()
